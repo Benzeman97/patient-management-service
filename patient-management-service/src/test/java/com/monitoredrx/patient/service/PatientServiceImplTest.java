@@ -3,6 +3,8 @@ package com.monitoredrx.patient.service;
 import com.monitoredrx.patient.dto.request.PatientRequest;
 import com.monitoredrx.patient.dto.response.PatientResponse;
 import com.monitoredrx.patient.entity.Patient;
+import com.monitoredrx.patient.exception.ApplicationException;
+import com.monitoredrx.patient.exception.DataNotFoundException;
 import com.monitoredrx.patient.repository.PatientRepository;
 import com.monitoredrx.patient.service.impl.PatientServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -109,6 +112,54 @@ public class PatientServiceImplTest {
     public void updatePatientTest() {
         UUID id = UUID.randomUUID();
 
-        
+        Patient existing = new Patient();
+        existing.setId(id);
+
+        when(patientRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(patientRepository.save(any(Patient.class))).thenReturn(existing);
+
+        PatientResponse response =
+                patientService.updatePatient(id.toString(), new PatientRequest());
+
+        verify(patientRepository).save(any(Patient.class));
     }
-}
+
+    @Test
+    @DisplayName("deletePatientTest")
+    public void deletePatientTest() {
+        UUID id = UUID.randomUUID();
+        Patient patient = new Patient();
+        patient.setId(id);
+
+        when(patientRepository.findById(id)).thenReturn(Optional.of(patient));
+
+        patientService.deletePatient(id.toString());
+
+        verify(patientRepository).delete(patient);
+    }
+
+    @Test
+    @DisplayName("getPatientByIdTest_invalidUUID")
+    public void getPatientByIdTest_invalidUUID() {
+        ApplicationException ex = assertThrows(
+                ApplicationException.class,
+                () -> patientService.getPatientById("invalid-uuid")
+        );
+
+        assertEquals(100008, ex.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("getPatientByIdTest_notFound")
+    public void getPatientByIdTest_notFound() {
+        UUID id = UUID.randomUUID();
+
+        when(patientRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(
+                DataNotFoundException.class,
+                () -> patientService.getPatientById(id.toString())
+        );
+    }
+
+    }
