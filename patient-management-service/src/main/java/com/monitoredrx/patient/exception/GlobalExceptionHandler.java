@@ -1,6 +1,7 @@
 package com.monitoredrx.patient.exception;
 
 import com.monitoredrx.patient.dto.response.ErrorMessageResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,30 @@ public class GlobalExceptionHandler {
           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 
-    public ResponseEntity<ErrorMessageResponse> 
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<ErrorMessageResponse> handleDataNotFoundException(DataNotFoundException ex, Locale locale){
+        ErrorMessageResponse errorMessage = new ErrorMessageResponse(
+                HttpStatus.NOT_FOUND.value(),
+                messageSource.getMessage(ex.getMessage(),null,locale)
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorMessageResponse> handleValidationException(ConstraintViolationException ex, Locale locale) {
+        ErrorMessageResponse errorMessage = new ErrorMessageResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                messageSource.getMessage(ex.getMessage(),null,locale)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorMessageResponse> handleGenericException(Exception ex, Locale locale){
+        ErrorMessageResponse errorMessage = new ErrorMessageResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                messageSource.getMessage("error.internal.server",null,locale)
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+    }
 }
