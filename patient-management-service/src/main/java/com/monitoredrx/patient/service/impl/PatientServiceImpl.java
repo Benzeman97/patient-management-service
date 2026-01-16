@@ -9,6 +9,7 @@ import com.monitoredrx.patient.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +41,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "PATIENTS", key = "#root.methodName + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
-    public List<PatientResponse> getPatientsByPage(Pageable pageable) {
+    public Page<PatientResponse> getPatientsByPage(Pageable pageable) {
         LOGGER.info("Fetching patients - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
         return patientRepository.findAll(pageable)
-                .map(PatientMapper::toResponse)
-                .toList();
+                .map(PatientMapper::toResponse);
     }
 
     @Override
