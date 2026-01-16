@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,9 +49,9 @@ public class PatientController {
     })
     public ResponseEntity<Page<PatientResponse>> getPatients(
             @Parameter(description = "Page number (0-based)", example = "0")
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") @Min(value = 0, message = "{error.invalid.page.number}") int page,
             @Parameter(description = "Page size", example = "16")
-            @RequestParam(defaultValue = "16") int size){
+            @RequestParam(defaultValue = "16") @Min(value = 1, message = "{error.invalid.size}") int size){
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(patientService.getPatientsByPage(pageable));
     }
@@ -62,7 +63,6 @@ public class PatientController {
             @ApiResponse(responseCode = "404", description = "Patient not found")
     })
     public ResponseEntity<PatientResponse> getPatient(
-            @Parameter(description = "ID of the patient", required = true)
             @PathVariable @NotBlank(message = "{patient.id.required}") String id){
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
@@ -74,7 +74,6 @@ public class PatientController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     public ResponseEntity<PatientResponse> createPatient(
-            @Parameter(description = "Patient data", required = true)
             @Valid @RequestBody PatientRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(patientService.createPatient(request));
@@ -88,9 +87,7 @@ public class PatientController {
             @ApiResponse(responseCode = "404", description = "Patient not found")
     })
     public ResponseEntity<PatientResponse> updatePatient(
-            @Parameter(description = "ID of the patient to update", required = true)
             @PathVariable @NotBlank(message = "{patient.id.required}") String id,
-            @Parameter(description = "Updated patient data", required = true)
             @Valid @RequestBody PatientRequest request){
         return ResponseEntity.ok(patientService.updatePatient(id,request));
     }
@@ -102,7 +99,6 @@ public class PatientController {
             @ApiResponse(responseCode = "404", description = "Patient not found")
     })
     public ResponseEntity<Void> deletePatient(
-            @Parameter(description = "ID of the patient to delete", required = true)
             @PathVariable @NotBlank(message = "{patient.id.required}") String id){
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
