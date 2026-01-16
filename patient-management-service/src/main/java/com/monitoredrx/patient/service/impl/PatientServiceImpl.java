@@ -3,11 +3,14 @@ package com.monitoredrx.patient.service.impl;
 import com.monitoredrx.patient.dto.request.PatientRequest;
 import com.monitoredrx.patient.dto.response.PatientResponse;
 import com.monitoredrx.patient.entity.Patient;
+import com.monitoredrx.patient.exception.ApplicationException;
+import com.monitoredrx.patient.exception.DataNotFoundException;
 import com.monitoredrx.patient.mapper.PatientMapper;
 import com.monitoredrx.patient.repository.PatientRepository;
 import com.monitoredrx.patient.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +35,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional(readOnly = true)
     @Cacheable(value = "PATIENTS", key = "#root.methodName")
     public List<PatientResponse> getAllPatients() {
-        LOGGER.info("Fetching all patients");
+        LOGGER.info("Retrieving all patients from database");
         return patientRepository.findAll()
                 .stream().map(PatientMapper::toResponse)
                 .toList();
@@ -42,7 +45,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional(readOnly = true)
     @Cacheable(value = "PATIENTS", key = "#root.methodName + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
     public Page<PatientResponse> getPatientsByPage(Pageable pageable) {
-        LOGGER.info("Fetching patients - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
+        LOGGER.info("Retrieving patients - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
         return patientRepository.findAll(pageable)
                 .map(PatientMapper::toResponse);
     }
@@ -64,7 +67,7 @@ public class PatientServiceImpl implements PatientService {
                 .orElseThrow(()->{
                     LOGGER.error("Patient with ID {} not found", patientId);
                     throw new DataNotFoundException("error.patient.not.found");});
-        LOGGER.info("Fetching Patient for Patient ID {}", patientId);
+        LOGGER.info("Retrieving Patient for Patient ID {}", patientId);
         return PatientMapper.toResponse(patient);
     }
 
