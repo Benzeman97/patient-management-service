@@ -70,6 +70,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "PATIENTS", allEntries = true)
     public PatientResponse createPatient(PatientRequest request) {
 
         Patient patient;
@@ -88,6 +89,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "PATIENTS", allEntries = true)
     public PatientResponse updatePatient(String patientId, PatientRequest request) {
         UUID id;
         try {
@@ -118,6 +120,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "PATIENTS", allEntries = true)
     public void deletePatient(String patientId) {
         UUID id;
         try {
@@ -130,7 +133,7 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.error("Patient with ID {} not found", patientId);
-                    return new DataNotFoundException("error.patient.not.found");
+                    throw new DataNotFoundException("error.patient.not.found");
                 });
 
         patientRepository.delete(patient);
