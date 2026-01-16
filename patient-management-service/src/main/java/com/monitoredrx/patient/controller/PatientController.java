@@ -22,7 +22,7 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/patients")
+@RequestMapping("/api/v1/patient")
 @Validated
 @Tag(name = "Patients", description = "APIs for managing patients")
 public class PatientController {
