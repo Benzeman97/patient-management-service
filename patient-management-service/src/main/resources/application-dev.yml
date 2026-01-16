@@ -1,7 +1,6 @@
 server:
   port: 8195
 
-
 database:
   host: 'patient-management-db.fg8eiu4gko4z.us-east-1.rds.amazonaws.com'
   port: 5432

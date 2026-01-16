@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.monitoredrx.patient'
-version = '1.x'
+version = '1.0'
 description = 'Spring Boot backend service for patient management with PostgreSQL and JPA, providing full CRUD REST API and OpenAPI documentation.'
 
 java {

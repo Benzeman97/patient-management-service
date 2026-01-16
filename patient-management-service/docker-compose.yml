@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  patient-service:
+    image: patient-management-service:1.x
+    container_name: patient-service
+    ports:
+      - "8195:8195"
+    networks:
+      - patient-service-network
+    restart: on-failure
+
+networks:
+  patient-service-network:
