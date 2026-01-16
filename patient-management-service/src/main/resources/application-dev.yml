@@ -26,7 +26,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     redis:
       host: 51.89.190.208
       port: 6969
