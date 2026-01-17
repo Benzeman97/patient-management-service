@@ -6,17 +6,17 @@ import com.monitoredrx.patient.entity.Patient;
 
 public class PatientMapper {
 
-    public static PatientResponse toResponse(Patient entity){
-        PatientResponse response = new PatientResponse();
-        response.setId(entity.getId().toString());
-        response.setFirstName(entity.getFirstName());
-        response.setLastName(entity.getLastName());
-        response.setAddress(entity.getAddress());
-        response.setCity(entity.getCity());
-        response.setState(entity.getState());
-        response.setZipCode(entity.getZipCode());
-        response.setPhoneNumber(entity.getPhoneNumber());
-        return response;
+    public static PatientResponse toResponse(Patient entity) {
+        return PatientResponse.builder()
+                .id(entity.getId().toString())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .address(entity.getAddress())
+                .city(entity.getCity())
+                .state(entity.getState())
+                .zipCode(entity.getZipCode())
+                .phoneNumber(entity.getPhoneNumber())
+                .build();
     }
 
     public static Patient toEntity(PatientRequest request){

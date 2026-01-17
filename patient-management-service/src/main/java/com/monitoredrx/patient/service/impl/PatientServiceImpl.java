@@ -1,5 +1,6 @@
 package com.monitoredrx.patient.service.impl;
 
+import com.monitoredrx.patient.ErrorCode;
 import com.monitoredrx.patient.dto.request.PatientRequest;
 import com.monitoredrx.patient.dto.response.PatientResponse;
 import com.monitoredrx.patient.entity.Patient;
@@ -60,7 +61,7 @@ public class PatientServiceImpl implements PatientService {
             id = UUID.fromString(patientId);
         } catch (IllegalArgumentException e) {
             LOGGER.error("Invalid UUID format: {}", patientId);
-            throw new ApplicationException(100008, "error.invalid.uuid.format");
+            throw new ApplicationException(ErrorCode.INVALID_UUID.getCode(), "error.invalid.uuid.format");
         }
 
         Patient patient = patientRepository.findById(id)
@@ -81,7 +82,7 @@ public class PatientServiceImpl implements PatientService {
             patient = PatientMapper.toEntity(request);
         } catch (Exception e) {
             LOGGER.error("Error mapping patient request to entity: {}", e.getMessage(), e);
-            throw new ApplicationException(100009, "error.mapping.patient");
+            throw new ApplicationException(ErrorCode.MAPPING_ERROR.getCode(), "error.mapping.patient");
         }
 
         Patient savedPatient = patientRepository.save(patient);
@@ -99,7 +100,7 @@ public class PatientServiceImpl implements PatientService {
             id = UUID.fromString(patientId);
         } catch (IllegalArgumentException e) {
             LOGGER.error("Invalid UUID format: {}", patientId);
-            throw new ApplicationException(100008, "error.invalid.uuid.format");
+            throw new ApplicationException(ErrorCode.INVALID_UUID.getCode(), "error.invalid.uuid.format");
         }
 
         Patient patient = patientRepository.findById(id)
@@ -112,7 +113,7 @@ public class PatientServiceImpl implements PatientService {
             patient = PatientMapper.toEntity(request, patient);
         } catch (Exception e) {
             LOGGER.error("Error mapping patient request to entity for ID {}: {}", patientId, e.getMessage(), e);
-            throw new ApplicationException(100009, "error.mapping.patient");
+            throw new ApplicationException(ErrorCode.MAPPING_ERROR.getCode(), "error.mapping.patient");
         }
 
         patient = patientRepository.save(patient);
@@ -130,7 +131,7 @@ public class PatientServiceImpl implements PatientService {
             id = UUID.fromString(patientId);
         } catch (IllegalArgumentException e) {
             LOGGER.error("Invalid UUID format: {}", patientId);
-            throw new ApplicationException(100008, "error.invalid.uuid.format");
+            throw new ApplicationException(ErrorCode.INVALID_UUID.getCode(), "error.invalid.uuid.format");
         }
 
         Patient patient = patientRepository.findById(id)
