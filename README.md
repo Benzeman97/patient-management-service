@@ -5,9 +5,6 @@
 ## Description
 This project is a Patient Management REST application built using Spring Boot. It provides CRUD operations for patient data and exposes RESTful APIs consumed by a React frontend.
 
-## Description
-This project is a Patient Management REST application built using Spring Boot. It provides CRUD operations for patient data and exposes RESTful APIs consumed by a React frontend.
-
 ---
 
 ## Tech Stack
