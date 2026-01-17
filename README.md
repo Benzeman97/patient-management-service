@@ -22,6 +22,7 @@ This project is a Patient Management REST application built using Spring Boot. I
 
 ### Prerequisites
 - Java 17
+- Spring Boot 4.0
 - Gradle
 - PostgreSQL database (AWS RDS or local)
 
