@@ -26,7 +26,7 @@ This project is a Patient Management REST application built using Spring Boot. I
 - PostgreSQL database (AWS RDS or local)
 
 ### Database Configuration
-The application uses PostgreSQL for data persistence. Database connection details are configured in `application.properties`.
+The application uses PostgreSQL for data persistence. Database connection details are configured in `application-dev.yml`.
 
 > **Note:** Database credentials are not committed to the repository.
 
