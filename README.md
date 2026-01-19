@@ -39,10 +39,17 @@ The application uses PostgreSQL for data persistence. Database connection detail
 ---
 
 ### Build the Application
+```bash
 ./gradlew clean build
+```
 
 ### Run the Application
+
+```bash
 java -jar build/libs/patient-management-service-1.0.jar
+```
 
 ## API Documentation
+```bash
 http://localhost:8195/swagger-ui.html
+```
