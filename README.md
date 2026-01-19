@@ -2,8 +2,9 @@
 
 ##Technical assessment
 
-## Description
-This project is a Patient Management REST application built using Spring Boot. It provides CRUD operations for patient data and exposes RESTful APIs consumed by a React frontend.
+## Overview
+The Patient Management Service is a RESTful backend application built using Spring Boot.
+It provides full CRUD operations for managing patient data and exposes APIs that are consumed by a React frontend.
 
 ---
 
@@ -13,6 +14,7 @@ This project is a Patient Management REST application built using Spring Boot. I
 - Gradle
 - PostgreSQL (AWS RDS)
 - Spring Data JPA (Hibernate)
+- Redis
 - OpenAPI (Swagger)
 - React
 
@@ -25,6 +27,9 @@ This project is a Patient Management REST application built using Spring Boot. I
 - Spring Boot 4.0
 - Gradle
 - PostgreSQL database (AWS RDS or local)
+- Redis Server 8.0
+  
+> **Note:** Redis Server must be running before starting the application.
 
 ### Database Configuration
 The application uses PostgreSQL for data persistence. Database connection details are configured in `application-dev.yml`.
@@ -41,8 +46,3 @@ java -jar build/libs/patient-management-service-1.0.jar
 
 ## API Documentation
 http://localhost:8195/swagger-ui.html
-
-
-
-
-
