@@ -33,8 +33,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     @Cacheable(value = "PATIENTS", key = "#root.methodName")
+    @Transactional(readOnly = true)
     public List<PatientResponse> getAllPatients() {
         LOGGER.info("Retrieving all patients from database");
         return patientRepository.findAll()
@@ -43,8 +43,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     @Cacheable(value = "PATIENTS", key = "#root.methodName + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
+    @Transactional(readOnly = true)
     public Page<PatientResponse> getPatientsByPage(Pageable pageable) {
         LOGGER.info("Retrieving patients - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
         return patientRepository.findAll(pageable)
@@ -52,8 +52,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     @Cacheable(value = "PATIENTS", key = "#root.methodName + '-' + #patientId")
+    @Transactional(readOnly = true)
     public PatientResponse getPatientById(String patientId) {
 
         UUID id;
@@ -73,8 +73,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
     @CacheEvict(value = "PATIENTS", allEntries = true)
+    @Transactional
     public PatientResponse createPatient(PatientRequest request) {
 
         Patient patient;
@@ -123,8 +123,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
     @CacheEvict(value = "PATIENTS", allEntries = true)
+    @Transactional
     public void deletePatient(String patientId) {
         UUID id;
         try {
