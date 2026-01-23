@@ -23,7 +23,6 @@ import java.util.UUID;
 
 @Service
 public class PatientServiceImpl implements PatientService {
-
     final private static Logger LOGGER = LogManager.getLogger(PatientServiceImpl.class);
 
     private final PatientRepository patientRepository;
@@ -33,7 +32,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Cacheable(value = "PATIENTS", key = "#root.methodName")
+    @Cacheable(value = "PATIENT_LIST", key = "'all'")
     @Transactional(readOnly = true)
     public List<PatientResponse> getAllPatients() {
         LOGGER.info("Retrieving all patients from database");
@@ -43,7 +42,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Cacheable(value = "PATIENTS", key = "#root.methodName + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
+    @Cacheable(value = "PATIENT_PAGE", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
     @Transactional(readOnly = true)
     public Page<PatientResponse> getPatientsByPage(Pageable pageable) {
         LOGGER.info("Retrieving patients - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
@@ -52,7 +51,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Cacheable(value = "PATIENTS", key = "#root.methodName + '-' + #patientId")
+    @Cacheable(value = "PATIENT", key = "#patientId")
     @Transactional(readOnly = true)
     public PatientResponse getPatientById(String patientId) {
 
@@ -73,6 +72,10 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Caching(evict = {
+        @CacheEvict(value = "PATIENT_LIST", allEntries = true),
+        @CacheEvict(value = "PATIENT_PAGE", allEntries = true)
+    })
     @Transactional
     public PatientResponse createPatient(PatientRequest request) {
 
@@ -91,7 +94,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @CachePut(value = "PATIENTS", key = "#patientId")
+     @Caching(
+        put = @CachePut(value = "PATIENT", key = "#patientId"),
+        evict = {
+            @CacheEvict(value = "PATIENT_LIST", allEntries = true),
+            @CacheEvict(value = "PATIENT_PAGE", allEntries = true)
+        }
+    )
     @Transactional
     public PatientResponse updatePatient(String patientId, PatientRequest request) {
         UUID id;
@@ -122,7 +131,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @CacheEvict(value = "PATIENTS", key = "#patientId")
+    @Caching(evict = {
+        @CacheEvict(value = "PATIENT", key = "#patientId"),
+        @CacheEvict(value = "PATIENT_LIST", allEntries = true),
+        @CacheEvict(value = "PATIENT_PAGE", allEntries = true)
+    })
     @Transactional
     public void deletePatient(String patientId) {
         UUID id;
