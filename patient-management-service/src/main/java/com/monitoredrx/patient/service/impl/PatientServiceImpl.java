@@ -73,7 +73,6 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @CacheEvict(value = "PATIENTS", allEntries = true)
     @Transactional
     public PatientResponse createPatient(PatientRequest request) {
 
@@ -92,8 +91,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @CachePut(value = "PATIENTS", key = "#patientId")
     @Transactional
-    @CacheEvict(value = "PATIENTS", allEntries = true)
     public PatientResponse updatePatient(String patientId, PatientRequest request) {
         UUID id;
         try {
@@ -123,7 +122,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @CacheEvict(value = "PATIENTS", allEntries = true)
+    @CacheEvict(value = "PATIENTS", key = "#patientId")
     @Transactional
     public void deletePatient(String patientId) {
         UUID id;
