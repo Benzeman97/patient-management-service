@@ -23,6 +23,7 @@ import java.util.UUID;
 
 @Service
 public class PatientServiceImpl implements PatientService {
+    
     final private static Logger LOGGER = LogManager.getLogger(PatientServiceImpl.class);
 
     private final PatientRepository patientRepository;
