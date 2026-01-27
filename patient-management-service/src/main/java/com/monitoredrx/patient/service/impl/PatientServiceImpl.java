@@ -33,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Cacheable(value = "patient:list", key = "'all'")
+    @Cacheable(value = "patient:list")
     @Transactional(readOnly = true)
     public List<PatientResponse> getAllPatients() {
         LOGGER.info("Retrieving all patients from database");
