@@ -1,4 +1,4 @@
-package com.monitoredrx.patient;
+package com.monitoredrx.patient.enums;
 
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.monitoredrx.patient.service.impl;
 
-import com.monitoredrx.patient.ErrorCode;
+import com.monitoredrx.patient.enums.ErrorCode;
 import com.monitoredrx.patient.dto.request.PatientRequest;
 import com.monitoredrx.patient.dto.response.PatientResponse;
 import com.monitoredrx.patient.entity.Patient;
